@@ -61,7 +61,13 @@ iamsync.py -r  -g build_fetchers --group-policies --user-policies --substitute \
 
 TODO:
 
+Come up with better synching algorithm. 
+
 This probably won't work well if you have tons of accounts -- There needs to be some work done in handling
-pagination with huge result sets.  
+pagination with huge result sets.
+
+Generate CloudFormation template based on IAM resources
+
+  
   
 
