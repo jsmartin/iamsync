@@ -1,0 +1,63 @@
+iamsync is a utility to copy IAM users, groups, and policies from one AWS 
+account to another.  This is particularly useful if you have separate
+AWS accounts for dev, qa, production and want to mirror the IAM setup.
+
+Requirements:
+
+You need 2 AWS accounts (obviously)
+You need to create a IAM user on each of these accounts that has enough
+privledges to list users on the source, and list/create users, groups, and 
+policies on the destination.
+You need to create a configuration file that specifies the credentials
+for both accounts (see config).
+
+
+Usage:
+
+iamsync.py -h
+usage: iamsync.py [-h] [-c my_config_file]
+                  [-g office_drones [office_drones ...]] [--group-policies]
+                  [-r] [-s foo bar bibam bop [foo bar bibam bop ...]]
+                  [-u jdoe [jdoe ...]] [--user-policies]
+
+Syncs IAM resources from one account to another.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -c my_config_file, --config-file my_config_file
+                        config file containing source and destination access
+                        keys
+  -g office_drones [office_drones ...], --groups office_drones [office_drones ...]
+                        space separated list of groups
+  --group-policies      copy policies with group
+  -r, --recursive       recursively copy users with group
+  -s foo bar bibam bop [foo bar bibam bop ...], --substitute foo bar bibam bop [foo bar bibam bop ...]
+                        simple find and replace for arns injson policy in case
+                        you want to change a s3 target when copying policy
+  -u jdoe [jdoe ...], --users jdoe [jdoe ...]
+                        space separated list of users
+  --user-policies       copy policies with user
+  
+  
+  Example usage:
+ 
+Let's say you wanted to copy a group called "build_fetchers", the policies associated with that group,
+the users associated with that group, and the user policies associated with those users:
+
+iamsync.py -r -g build_fetchers --group-policies --user-policies 
+ 
+Let's say you want to do all the same things as above and:
+
+Additionally, let's say you have a bucket name "mycompany.dev" (your source account) and you have a policy
+that addresses it by name. In your prod account you have a bucket called "mycompany.prod".
+In your dev account the bucket "mycompany.dev" is referred to by name in the ARN for the policy associated
+with group build_fetchers and you want to switch it to "mycompany.prod" to match the account you are 
+copying it to.
+  
+iamsync.py -r  -g build_fetchers --group-policies --user-policies --substitute \
+	mycompany.dev mycompany.prod 
+  
+  
+  
+  
+

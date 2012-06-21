@@ -1,0 +1,6 @@
+[src]
+aws_access_key_id = src_myaccesskeyid
+aws_secret_access_key = src_mysecretaccesskey
+[dest]
+aws_access_key_id = dest_myaccesskeyid
+aws_secret_access_key = dest_mysecretaccesskey
